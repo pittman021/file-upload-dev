@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
+const keys = require('./keys');
 
 const app = express();
 app.use(bodyParser.json());
 
-const sequelize = new Sequelize('file_upload_database', 'root', 'password', {
+const sequelize = new Sequelize('file_upload_database', keys.username, keys.password, {
   host: 'localhost',
   dialect: 'mysql',
   pool: {
