@@ -1,62 +1,68 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
+const path = require('path');
+const passport = require('passport');
 const keys = require('./keys');
+const models = require('./models/index');
+require('./services/passport');
 
 const app = express();
-app.use(bodyParser.json());
-
-const sequelize = new Sequelize('file_upload_database', keys.username, keys.password, {
-  host: 'localhost',
-  dialect: 'mysql',
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.use('/images', express.static(path.join(__dirname, 'uploads')));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.set('models', require('./models'));
 
 // testing DB Connection //
-sequelize
+
+models.sequelize
   .authenticate()
   .then(() => {
     console.log('connection established');
   })
   .catch(err => {
-    console.err('unable to connect', err);
+    console.log('unable to connect', err);
   });
 
-const User = sequelize.define('user', {
-  firstName: {
-    type: Sequelize.STRING
-  },
-  lastName: {
-    type: Sequelize.STRING
-  }
-});
-
-const File = sequelize.define('file', {
-  filename: Sequelize.STRING,
-  path: Sequelize.STRING
-});
-
-// Creating User Table
-User.sync({ force: true }).then(() => {
-  return User.create({
-    firstName: 'Tim',
-    lastName: 'Pittman'
+models.sequelize
+  .sync()
+  .then(function() {
+    console.log('Database is good');
+  })
+  .catch(function(err) {
+    console.log('Something went wrong');
   });
+
+// User.sync().then(() => {
+//   return User.create({
+//     username: 'Tim',
+//     password: 'password'
+//   });
+// });
+//
+// File.sync({ force: true }).then(() => {
+//   return File.create({
+//     filename: 'myfile.js',
+//     path: '/uploads/myfile.js'
+//   });
+// });
+
+// app routes //
+
+require('./routes/fileUpload')(app);
+require('./routes/index')(app);
+require('./routes/authRoutes')(app);
+
+app.post('/login', passport.authenticate('local-login', { failureRedirect: '/login' }), function(req, res) {
+  res.redirect('/');
 });
 
-File.sync({ force: true }).then(() => {
-  return File.create({
-    filename: 'myfile.js',
-    path: '/users/files/path'
-  });
+app.post('/signup', passport.authenticate('local-signup', { failureRedirect: '/singup' }), (req, res) => {
+  res.redirect('/');
 });
-
-File.belongsTo(User);
 
 const PORT = 5000;
 app.listen(PORT, () => {
