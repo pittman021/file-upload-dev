@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const path = require('path');
 const passport = require('passport');
 const keys = require('./config/keys');
-const models = require('./models');
+// const models = require('./models');
 require('./services/passport');
 
 const app = express();
@@ -23,23 +23,23 @@ app.use(function(req, res, next) {
 
 // testing DB Connection //
 
-models.sequelize
-  .authenticate()
-  .then(() => {
-    console.log('connection established');
-  })
-  .catch(err => {
-    console.log('unable to connect', err);
-  });
-
-models.sequelize
-  .sync()
-  .then(function() {
-    console.log('Database is good');
-  })
-  .catch(function(err) {
-    console.log('Something went wrong');
-  });
+// models.sequelize
+//   .authenticate()
+//   .then(() => {
+//     console.log('connection established');
+//   })
+//   .catch(err => {
+//     console.log('unable to connect', err);
+//   });
+//
+// models.sequelize
+//   .sync()
+//   .then(function() {
+//     console.log('Database is good');
+//   })
+//   .catch(function(err) {
+//     console.log('Something went wrong');
+//   });
 
 // models.user.sync().then(() => {
 //   return models.User.create({
