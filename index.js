@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const path = require('path');
 const passport = require('passport');
 const keys = require('./config/keys');
-const models = require('./models/index');
+const models = require('./models');
 require('./services/passport');
 
 const app = express();
