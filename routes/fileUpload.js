@@ -13,23 +13,17 @@ const upload = multer({ storage: storage });
 
 module.exports = app => {
   app.post('/upload', upload.single('filetoUpload'), (req, res) => {
-    console.log(req.user);
     const file = req.file.originalname;
     const path = req.file.path;
+    const owner = req.user;
     models.file
       .create({
         filename: req.file.originalname,
         path: path,
-        User: req.user.id
+        userId: owner
       })
       .then(file => {
         res.redirect('/');
       });
-  });
-
-  app.get('/file/:id', (req, res) => {
-    models.file.find({ id: req.params.id }).then(file => {
-      res.send(file);
-    });
   });
 };

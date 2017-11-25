@@ -1,13 +1,19 @@
-<html>
-<head></head>
-<body>
+
+<% include ./templates/headers %>
+
 <h2>Upload Files</h2>
 <form action="/upload" enctype="multipart/form-data" method="post">
 	<input type="file" name="filetoUpload">
-	<input type="submit"></input>
+	<input class="btn" type="submit"></input>
 </form>
 
-<h3>Files</h3>
+<ul class="collection with-header">
+	<li class="collection-header"><h4>My Files</h4></li>
+ 	 <% if(files) { %>
+	 <% files.forEach(function(file) { %>
+     <li class="collection-item"><div><%= file.filename %><a href="/images/<%=file.filename%>" class="secondary-content" download><i class="material-icons">file_download</i></a></div></li>
 
-</body>
-</html>
+	 <% }); }  %>
+ </ul>
+
+	 <% include ./templates/footer %>

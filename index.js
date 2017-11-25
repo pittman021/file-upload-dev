@@ -16,6 +16,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.set('models', require('./models'));
 
+app.use(function(req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 // testing DB Connection //
 
 models.sequelize
@@ -36,17 +41,19 @@ models.sequelize
     console.log('Something went wrong');
   });
 
-// User.sync().then(() => {
-//   return User.create({
+// models.user.sync().then(() => {
+//   return models.User.create({
 //     username: 'Tim',
-//     password: 'password'
+//     password: '123455'
 //   });
 // });
-//
-// File.sync({ force: true }).then(() => {
-//   return File.create({
+
+// models.file.sync({ force: true }).then(() => {
+//   return models.user.create({
 //     filename: 'myfile.js',
-//     path: '/uploads/myfile.js'
+//     path: '/uploads/myfile.js',
+//     userId: 1,
+//     owner_id: null
 //   });
 // });
 
