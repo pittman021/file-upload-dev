@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 const path = require('path');
 const passport = require('passport');
-const keys = require('./keys');
+const keys = require('./config/keys');
 const models = require('./models/index');
 require('./services/passport');
 

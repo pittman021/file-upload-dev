@@ -1,6 +1,6 @@
 'use strict';
 
-const keys = require('../keys');
+const keys = require('../config/keys');
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
