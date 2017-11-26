@@ -14,7 +14,6 @@ app.use('/images', express.static(path.join(__dirname, 'uploads')));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('models', require('./models'));
 
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
