@@ -71,7 +71,7 @@ app.post('/signup', passport.authenticate('local-signup', { failureRedirect: '/s
   res.redirect('/');
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log('server running on', PORT);
 });
