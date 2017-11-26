@@ -7,7 +7,7 @@ const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const db = {};
 
-const sequelize = new Sequelize('file_upload_database', keys.username, keys.password, {
+const sequelize = new Sequelize(keys.DATABASE_NAME, keys.DATABASE_USERNAME, keys.DATABASE_PASSWORD, {
   host: keys.DATABASE_URL,
   dialect: 'mysql',
   pool: {
